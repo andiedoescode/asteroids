@@ -1,18 +1,24 @@
 import pygame
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
     pygame.init()
 
-    # Returns a Surface object
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Returns a Surface object
     clock = pygame.time.Clock()
     dt = 0
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
@@ -27,9 +33,6 @@ def main():
         for item in drawable:
             item.draw(screen)
 
-        # pygame.Surface.fill(screen, (0, 0, 0))
-        # player.update(dt)
-        # player.draw(screen)
         pygame.display.flip()
         # Set frame rate to 60 FPS. Pass the return (amt of time passed since last call) as seconds to variable dt
         dt = clock.tick(60)/1000 
